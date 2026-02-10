@@ -1,0 +1,53 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Assemble site
+        run: |
+          mkdir -p _site/node_modules/reveal.js/dist/theme/fonts
+          cp slides.html _site/index.html
+          cp custom.css _site/
+          cp -r node_modules/reveal.js/dist _site/node_modules/reveal.js/dist
+          cp -r node_modules/reveal.js/plugin _site/node_modules/reveal.js/plugin
+          cp node_modules/reveal.js/plugin/highlight/monokai.css _site/monokai.css
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
