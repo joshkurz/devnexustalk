@@ -31,11 +31,11 @@ jobs:
 
       - name: Assemble site
         run: |
-          mkdir -p _site/node_modules/reveal.js/dist/theme/fonts
+          mkdir -p _site/node_modules/reveal.js
           cp slides.html _site/index.html
           cp custom.css _site/
-          cp -r node_modules/reveal.js/dist _site/node_modules/reveal.js/dist
-          cp -r node_modules/reveal.js/plugin _site/node_modules/reveal.js/plugin
+          cp -r node_modules/reveal.js/dist _site/node_modules/reveal.js/
+          cp -r node_modules/reveal.js/plugin _site/node_modules/reveal.js/
           cp node_modules/reveal.js/plugin/highlight/monokai.css _site/monokai.css
 
       - uses: actions/upload-pages-artifact@v3
