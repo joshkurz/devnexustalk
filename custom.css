@@ -1,0 +1,128 @@
+/* Lock-screen clock */
+.lockscreen {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.lockscreen-day {
+  font-size: 0.85em;
+  color: #888;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  margin-bottom: -5px;
+}
+
+.lockscreen-time {
+  font-size: 5em;
+  font-weight: 200;
+  color: #fff;
+  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+  line-height: 1.1;
+}
+
+.lockscreen-alarm {
+  font-size: 0.75em;
+  color: #ff453a;
+  letter-spacing: 2px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Notification stack */
+.notification-stack {
+  max-width: 620px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.notification {
+  background: rgba(44, 44, 46, 0.95);
+  border-radius: 16px;
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.notification-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.notification-badge {
+  color: #fff;
+  font-size: 0.55em;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+.notification-badge--slack    { background: #4a154b; }
+.notification-badge--github   { background: #238636; }
+.notification-badge--security { background: #a03030; }
+.notification-badge--jira     { background: #0052cc; }
+
+.notification-time {
+  font-size: 0.55em;
+  color: #888;
+  margin-left: auto;
+}
+
+.notification-title {
+  color: #fff;
+  font-size: 0.8em;
+  font-weight: 500;
+}
+
+.notification-subtitle {
+  color: #aaa;
+  font-size: 0.65em;
+  margin-top: 2px;
+}
+
+.notification-subtitle--critical {
+  color: #ff453a;
+  font-size: 0.65em;
+  margin-top: 2px;
+}
+
+.notification-deadline {
+  color: #ff9f0a;
+  font-weight: 700;
+}
+
+/* Roadmap action text shown below the notification title */
+.notification-action {
+  color: #30d158;
+  font-size: 0.7em;
+  font-weight: 600;
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+}
+
+/* Roadmap footer items (non-notification) */
+.roadmap-footer {
+  max-width: 620px;
+  margin: 18px auto 0;
+  text-align: center;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.roadmap-footer-item {
+  color: #aaa;
+  font-size: 0.85em;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.roadmap-footer-item strong {
+  color: #fff;
+}
+

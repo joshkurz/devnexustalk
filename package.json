@@ -1,0 +1,17 @@
+{
+  "name": "devnexus-presentation",
+  "version": "1.0.0",
+  "description": "DevNexus 2026 — Unlocking Engineering Productivity with IDE-Based Coding Agents",
+  "scripts": {
+    "build": "npx asciidoctor-revealjs slides.adoc",
+    "serve": "npx http-server . -p 8080",
+    "start": "npm run build && npm run serve"
+  },
+  "dependencies": {
+    "@asciidoctor/reveal.js": "^5.1.0",
+    "asciidoctor": "^3.0.4"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

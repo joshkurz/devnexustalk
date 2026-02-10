@@ -1,0 +1,1074 @@
+= Unlocking Engineering Productivity with IDE-Based Coding Agents
+Josh Kurz — AI Engineering, JPMorgan Chase
+:revealjs_theme: black
+:revealjs_transition: slide
+:revealjs_transitionSpeed: default
+:revealjs_slideNumber: true
+:revealjs_hash: true
+:revealjs_width: 1920
+:revealjs_height: 1080
+:revealjs_margin: 0.04
+:source-highlighter: highlightjs
+:highlightjs-theme: monokai.css
+:customcss: custom.css
+:icons: font
+:imagesdir: images
+
+// ===================================================================
+// SECTION 1: Opening / Hook (Slides 1–5)
+// ===================================================================
+
+// ------ Slide 1: Title Slide ------
+
+DevNexus 2026
+
+icon:github[] github.com/joshkurz
+
+[.notes]
+--
+Welcome everyone. I'm Josh Kurz, I work in AI Engineering at JPMorgan Chase.
+Today I want to talk about something that's changed the way I work every single day — coding agents inside your IDE.
+This isn't about building custom AI platforms. It's about using the tools you already have.
+--
+
+// ------ Slide 2: Monday, 8:47 AM ------
+
+[%notitle]
+== Monday Morning
+
+++++
+<div class="lockscreen">
+  <div class="lockscreen-day">Monday</div>
+  <div class="lockscreen-time">8:47</div>
+  <div class="lockscreen-alarm">&#9724; ALARM — Stand-up in 13 minutes</div>
+</div>
+
+<div class="notification-stack">
+
+  <div class="fragment notification">
+    <div class="notification-header">
+      <span class="notification-badge notification-badge--slack">SLACK</span>
+      <span class="notification-time">now</span>
+    </div>
+    <div class="notification-title">23 unread messages</div>
+    <div class="notification-subtitle">#incidents, #deploy-approvals, #pr-reviews, and 3 DMs</div>
+  </div>
+
+  <div class="fragment notification">
+    <div class="notification-header">
+      <span class="notification-badge notification-badge--github">GITHUB</span>
+      <span class="notification-time">2m ago</span>
+    </div>
+    <div class="notification-title">4 pull requests waiting for your review</div>
+    <div class="notification-subtitle">Oldest has been open for 3 days</div>
+  </div>
+
+  <div class="fragment notification">
+    <div class="notification-header">
+      <span class="notification-badge notification-badge--security">SECURITY</span>
+      <span class="notification-time">3h ago</span>
+    </div>
+    <div class="notification-title">2 critical findings from overnight scan</div>
+    <div class="notification-subtitle--critical">CVE-2026-1847 — SQL injection in UserController</div>
+  </div>
+
+  <div class="fragment notification">
+    <div class="notification-header">
+      <span class="notification-badge notification-badge--jira">JIRA</span>
+      <span class="notification-time">8h ago</span>
+    </div>
+    <div class="notification-title">FEAT-4921 deadline: <span class="notification-deadline">Friday</span></div>
+    <div class="notification-subtitle">Rate limiter for payment API — 0% complete</div>
+  </div>
+
+
+</div>
+++++
+
+[.notes]
+--
+Sound familiar? This is most of us on a Monday morning.
+Before you've written a single line of code, you're already behind.
+The question isn't whether you're productive — it's whether you're spending time on the right things.
+(Pause after the last reveal. Let it land before continuing.)
+--
+
+// ------ Slide 3: Where Does Your Time Go? ------
+
+== Where Does Your Time Go?
+
+[.columns]
+=== Typical Engineer's Week
+
+[.column]
+--
+[%step]
+* 23% — Meetings & operational tasks
+* 19% — Code maintenance & debugging
+* 13% — Security & compliance
+* 12% — Testing & code review
+* *Only 16% — Writing new feature code*
+--
+
+[.column]
+--
+[%step]
+*84% of your week is spent on work that follows repeatable patterns.*
+
+An agent can help with most of it.
+--
+
+[.notes]
+--
+These numbers are composites from three major surveys: the Tidelift/New Stack developer survey of about 400 professional developers, the IDC "How Do Developers Spend Their Time" report from 2024, and Microsoft Research's "Time Warp" study of 484 developers.
+
+Sources: Tidelift / The New Stack (~400 developers surveyed); IDC "How Do Developers Spend Their Time?" (2024); Microsoft Research "Time Warp: Developers' Ideal vs Actual Workweeks" (2025, n=484).
+
+Only about 16% of an engineer's week is spent writing new feature code — and that's actually up from 15% the year before.
+Security time nearly doubled year-over-year according to IDC, from 8% to 13%.
+The rest is essential work — but much of it follows patterns that an agent can help with.
+I'm not saying we eliminate these tasks. I'm saying we get through them faster and with better quality.
+--
+
+// ------ Slide 4: What If ------
+
+[%notitle]
+== What If
+
+[quote]
+____
+What if the tools you already have could handle the work you dread?
+____
+
+[.notes]
+--
+This is the question I want you to hold in your mind for the next 40 minutes.
+Not new tools. Not a custom platform your company has to build.
+The tools already on your machine.
+--
+
+// ------ Slide 5: Talk Roadmap ------
+
+== Let's Fix This Engineer's Monday
+
+++++
+<div class="notification-stack">
+
+  <div class="fragment notification">
+    <div class="notification-header">
+      <span class="notification-badge notification-badge--github">GITHUB</span>
+      <span class="notification-time">4 PRs waiting</span>
+    </div>
+    <div class="notification-title">4 pull requests waiting for your review</div>
+    <div class="notification-action">/review-code &mdash; VS Code prompt file &nbsp;|&nbsp; /review &mdash; Claude Code skill</div>
+  </div>
+
+  <div class="fragment notification">
+    <div class="notification-header">
+      <span class="notification-badge notification-badge--security">SECURITY</span>
+      <span class="notification-time">CVE-2026-1847</span>
+    </div>
+    <div class="notification-title">SQL injection in UserController &mdash; fix before standup</div>
+    <div class="notification-action">/review-code focus=security &nbsp;|&nbsp; /security-review &mdash; Claude Code skill</div>
+  </div>
+
+  <div class="fragment notification">
+    <div class="notification-header">
+      <span class="notification-badge notification-badge--jira">JIRA</span>
+      <span class="notification-time">FEAT-4921 &mdash; Friday</span>
+    </div>
+    <div class="notification-title">Rate limiter for payment API &mdash; 0% complete</div>
+    <div class="notification-action">Atlassian Rovo MCP + Agent Mode &nbsp;|&nbsp; Claude Code + MCP</div>
+  </div>
+
+</div>
+
+<div class="fragment roadmap-footer">
+  <div class="roadmap-footer-item"><strong>The trap</strong> &mdash; generating code is easy; shipping quality is the job</div>
+  <div class="roadmap-footer-item"><strong>The tools</strong> &mdash; Copilot, Claude Code, and how to start Monday</div>
+</div>
+++++
+
+[.notes]
+--
+Here's what we're going to do. We're going to take that engineer's Monday morning
+and walk through it, notification by notification.
+Four PRs? We'll show how an agent handles the first pass so you can focus on what matters.
+Two security findings? We'll fix them before standup using tools already in your IDE.
+Feature due Friday? We'll go from a Jira ticket to tested, reviewed code using Agent Mode
+and Claude Code for the heavy lifting.
+And then we'll talk about the trap — because the goal isn't to generate more code.
+It's to ship better code, faster.
+--
+
+// ===================================================================
+// SECTION 2: Daily Tasks — Clearing the Notifications (Slides 6–14)
+// ===================================================================
+
+// ------ Slide 6: Section Divider — GitHub PRs ------
+
+[%notitle, background-color="#2d5aa0"]
+== Clear the Queue
+
+++++
+<div class="notification-stack">
+  <div class="notification">
+    <div class="notification-header">
+      <span class="notification-badge notification-badge--github">GITHUB</span>
+      <span class="notification-time">4 PRs waiting</span>
+    </div>
+    <div class="notification-title">4 pull requests waiting for your review</div>
+    <div class="notification-subtitle">Oldest has been open for 3 days</div>
+  </div>
+</div>
+++++
+
+Let's clear these before standup.
+
+[.notes]
+--
+OK. We've seen the notifications. Let's open VS Code and start clearing them.
+First up: 4 pull requests. The oldest is 3 days old — somebody is blocked on you.
+Let's show how an agent handles the mechanical first pass so you can focus on what matters.
+--
+
+// ------ Slide 7: PR Reviews — The Cost ------
+
+== 4 PRs x 23 Minutes = Your Entire Morning
+
+[%step]
+* Average PR review: *23 minutes* of focused attention
+* Context switching cost: *15 minutes* to get back to your own work
+* 4 PRs waiting = *2.5 hours* before you write a single line of code
+* Review fatigue: quality drops after the 2nd or 3rd PR
+* What slips through: missing null checks, inconsistent naming, untested edge cases
+
+[.notes]
+--
+PR review is one of the most important things we do — and one of the most draining.
+23 minutes per review times 4 PRs — that is nearly 2.5 hours including context switching.
+Your entire morning is gone before standup.
+And by the third review, you are skimming. Things slip through.
+Let's have the agent do the mechanical first pass.
+--
+
+// ------ Slide 8: PR Reviews — Agent-Assisted ------
+
+== Clear the PR Queue: Two Approaches
+
+[.columns]
+=== PR Review
+
+[.column]
+--
+*VS Code Copilot*
+[source,text]
+----
+/review-code
+Focus on: null safety, thread safety,
+naming conventions
+----
+Reusable prompt file at +
+`.github/prompts/review-code.prompt.md`
+
+Or use `@github` to pull PR context directly.
+--
+
+[.column]
+--
+*Claude Code*
+[source,bash]
+----
+$ claude /review
+----
+Built-in skill that reads the current branch diff, +
+checks for issues, and writes review comments.
+--
+
+[%step]
+* Agent scans *every file* in the diff — no skimming
+* Catches mechanical issues you'd miss on review #3
+* *You* focus on: architecture, design, business logic
+* Result: **4 PRs reviewed before standup**
+
+[.notes]
+--
+Two tools, same idea: let the agent do the mechanical first pass.
+In VS Code, /review-code is a prompt file stored at .github/prompts/review-code.prompt.md.
+It is a reusable, version-controlled prompt your whole team shares.
+You can also use the @github agent to pull PR context directly from GitHub.
+
+In Claude Code, /review is a built-in skill. Run it and it reads the diff, analyzes every file,
+and reports issues. You can also write custom review skills in .claude/skills/.
+
+The agent does not get tired. It checks every file with the same attention.
+This does not replace your review. It elevates it. You spend your time on the things
+only you can evaluate: does this design make sense? Is this the right abstraction?
+Result: 4 PRs reviewed before standup, and you still have energy for the rest of the day.
+--
+
+// ------ Slide 9: Section callback — Security ------
+
+[%notitle, background-color="#a03030"]
+== Fix the CVE
+
+++++
+<div class="notification-stack">
+  <div class="notification">
+    <div class="notification-header">
+      <span class="notification-badge notification-badge--security">SECURITY</span>
+      <span class="notification-time">CVE-2026-1847</span>
+    </div>
+    <div class="notification-title">SQL injection in UserController</div>
+    <div class="notification-subtitle--critical">2 critical findings from overnight scan</div>
+  </div>
+</div>
+++++
+
+Fix this before standup.
+
+[.notes]
+--
+PRs are cleared. Next notification: the security scan found CVE-2026-1847 overnight.
+SQL injection in the UserController. This is a critical finding — let's fix it right now,
+before standup, using the tools already in our IDE.
+--
+
+// ------ Slide 10: Security — Fixing CVE-2026-1847 ------
+
+== CVE-2026-1847: SQL Injection in UserController
+
+[.columns]
+=== Finding and Fixing
+
+[.column]
+--
+*VS Code Copilot*
+[source,text]
+----
+/review-code focus=security
+----
+Prompt file targets security-specific patterns: +
+injection, auth bypass, input validation.
+--
+
+[.column]
+--
+*Claude Code*
+[source,bash]
+----
+$ claude /security-review
+----
+Built-in skill that scans for OWASP Top 10 +
+vulnerabilities and suggests fixes.
+--
+
+*Before — the vulnerability:*
+[source,java]
+----
+// UserController.java — this is CVE-2026-1847
+String query = "SELECT * FROM users WHERE id = '" + userId + "'";
+Statement stmt = connection.createStatement();
+ResultSet rs = stmt.executeQuery(query);
+----
+
+*After — the fix:*
+[source,java]
+----
+String query = "SELECT * FROM users WHERE id = ?";
+PreparedStatement stmt = connection.prepareStatement(query);
+stmt.setString(1, userId);
+ResultSet rs = stmt.executeQuery();
+----
+
+[%step]
+* SQL injection -> parameterized query
+* CVE-2026-1847 resolved *before standup*, not after deployment
+
+[.notes]
+--
+Here is the actual code from the overnight scan. Classic SQL injection in UserController.
+In VS Code, /review-code with focus=security is a prompt file variant that targets
+security-specific patterns: injection, auth bypass, input validation.
+In Claude Code, /security-review is a built-in skill that scans for OWASP Top 10 issues.
+
+Both tools catch it immediately and suggest the parameterized query fix.
+The key point: this was found by the overnight scanner, but instead of filing a ticket
+and fixing it next sprint, we fixed it in 5 minutes before standup.
+That is the shift — security findings become same-day fixes, not backlog items.
+--
+
+// ------ Slide 11: Section callback — FEAT-4921 ------
+
+[%notitle, background-color="#0052cc"]
+== Build the Feature
+
+++++
+<div class="notification-stack">
+  <div class="notification">
+    <div class="notification-header">
+      <span class="notification-badge notification-badge--jira">JIRA</span>
+      <span class="notification-time">FEAT-4921 &mdash; Friday</span>
+    </div>
+    <div class="notification-title">Rate limiter for payment API &mdash; 0% complete</div>
+    <div class="notification-subtitle">Due <span class="notification-deadline">Friday</span> &mdash; start with tests</div>
+  </div>
+</div>
+++++
+
+Start with the tests. Then build the feature.
+
+[.notes]
+--
+PRs cleared. CVE fixed. Now the big one: FEAT-4921.
+Rate limiter for the payment API, due Friday, currently at 0%.
+We are going to start the way you should start any feature — with tests.
+Then we will build the implementation, and finally we will use Agent Mode and MCP
+to wire it all together from the Jira ticket.
+--
+
+// ------ Slide 12: Testing — Tests for the Rate Limiter ------
+
+== FEAT-4921: Start With Tests
+
+[.columns]
+=== Test Generation
+
+[.column]
+--
+*VS Code Copilot*
+[source,text]
+----
+/tests
+Generate tests for a sliding-window
+rate limiter: 100 req/min per API key,
+429 with Retry-After header.
+Cover: under limit, at limit, over limit,
+window reset, concurrent requests,
+missing API key.
+Use JUnit 5 and embedded Redis.
+----
+--
+
+[.column]
+--
+*Claude Code*
+[source,bash]
+----
+$ claude
+
+> Generate comprehensive tests for
+  FEAT-4921: rate limiter, sliding window,
+  100 req/min per API key, 429 + Retry-After.
+  Cover edge cases. JUnit 5 + embedded Redis.
+----
+--
+
+[source,java]
+----
+@Test
+@DisplayName("Should return 429 with Retry-After when limit exceeded")
+void shouldRejectWhenRateLimitExceeded() {
+    String apiKey = "test-key-001";
+    for (int i = 0; i < 100; i++) {
+        mockMvc.perform(post("/api/payments").header("X-API-Key", apiKey))
+            .andExpect(status().isOk());
+    }
+    mockMvc.perform(post("/api/payments").header("X-API-Key", apiKey))
+        .andExpect(status().isTooManyRequests())
+        .andExpect(header().exists("Retry-After"));
+}
+----
+
+[.notes]
+--
+We start FEAT-4921 test-first. In VS Code, the /tests prompt generates tests for a class
+or you can describe the behavior you want tested.
+In Claude Code, you describe the feature and ask for comprehensive tests.
+Both tools generate realistic test cases that cover the edge cases you would forget:
+what happens at exactly 100 requests? What about concurrent requests from different keys?
+What is the Retry-After value?
+You still review these — but the scaffolding is done. The mechanical work of setting up
+MockMvc, embedded Redis, and test fixtures is handled.
+--
+
+// ------ Slide 13: Feature Development — FEAT-4921 via MCP ------
+
+== FEAT-4921: From Jira Ticket to Working Code
+
+[.columns]
+=== Feature Build
+
+[.column]
+--
+*VS Code Copilot + MCP*
+[source,text]
+----
+@github Use the Atlassian MCP to read
+FEAT-4921. Implement the rate limiter
+for the payment API based on the ticket
+requirements. Include integration tests
+with embedded Redis.
+----
+Agent Mode reads the Jira ticket via +
+Atlassian Rovo MCP, then builds.
+--
+
+[.column]
+--
+*Claude Code + MCP*
+[source,bash]
+----
+$ claude
+
+> Read FEAT-4921 from Jira via MCP.
+  Implement the rate limiter for the
+  payment API. Sliding window,
+  100 req/min per API key, 429 with
+  Retry-After. Store in Redis.
+  Spring interceptor.
+  Include integration tests.
+----
+--
+
+[%step]
+* Agent reads ticket requirements from Jira via Atlassian Rovo MCP
+* Creates: `RateLimiter.java`, `RateLimitInterceptor.java`, `WebConfig.java`
+* Writes Redis commands using `StringRedisTemplate`
+* Adds `@SpringBootTest` with `@EmbeddedRedis`
+* Total: ~200 lines of production code, ~150 lines of tests
+* FEAT-4921: **0% -> working implementation with tests**
+
+[.notes]
+--
+This is where MCP changes everything. The Atlassian Rovo MCP server connects Jira and
+Confluence to both VS Code Agent Mode and Claude Code.
+Instead of copy-pasting requirements from a Jira ticket, the agent reads them directly.
+In VS Code, you use @github with the Atlassian MCP in Agent Mode.
+In Claude Code, the MCP server is configured in your project settings and the agent
+calls it as a tool.
+
+The agent reads FEAT-4921, understands the requirements — sliding window, 100 req/min,
+Redis storage, Spring interceptor — and builds the implementation.
+It chose the right Spring abstractions, the right Redis data structures, and generated tests.
+You review it, adjust it, and ship it. The boilerplate is handled.
+FEAT-4921 goes from 0% to a working, tested implementation before lunch.
+--
+
+// ------ Slide 14: Prompt Engineering Insight ------
+
+== The Prompt Makes the Difference
+
+[.columns]
+=== Prompt Quality
+
+[.column]
+--
+*Weak Prompt*
+
+[source,text]
+----
+"Add rate limiting to the API"
+----
+
+* Which endpoints?
+* What algorithm?
+* What limit?
+* What storage?
+* The agent will *guess* — badly
+--
+
+[.column]
+--
+*Strong Prompt (or just use MCP)*
+
+[source,text]
+----
+"Read FEAT-4921 from Jira via MCP.
+ Implement sliding window rate limiter.
+ 100 req/min per API key.
+ 429 + Retry-After header.
+ Redis via StringRedisTemplate.
+ Spring HandlerInterceptor.
+ Integration tests with embedded Redis."
+----
+
+* Specific scope and algorithm
+* Clear technology choices
+* Defined behavior and limits
+* Testable acceptance criteria
+--
+
+[.notes]
+--
+This is perhaps the most important slide in the talk.
+The quality of what you get out is directly proportional to the quality of what you put in.
+A vague prompt gets vague code. A specific prompt gets specific, reviewable, testable code.
+
+Notice the strong prompt on the right — it could also just be "Read FEAT-4921 from Jira via MCP
+and implement it." If your Jira ticket has good acceptance criteria, the MCP connection
+means you do not need to repeat them in the prompt.
+
+Prompt engineering is not a buzzword — it is a skill. And reusable prompt files
+(.github/prompts/*.prompt.md for Copilot, .claude/skills/ for Claude Code) let you
+encode that skill once and share it with your whole team.
+--
+
+// ===================================================================
+// SECTION 3: Going Deeper — Claude Code Power Moves (Slides 15–18)
+// ===================================================================
+
+// ------ Slide 15: Section Divider ------
+
+[%notitle, background-color="#6b3fa0"]
+== Going Deeper
+
+=== Going Deeper with Claude Code
+
+While waiting for PR approvals, tackle the big stuff
+
+[.notes]
+--
+We have been showing VS Code Copilot and Claude Code side by side all morning.
+For focused tasks — PR reviews, security fixes, feature work — both tools get the job done.
+But now, while you wait for PR approvals to come back, let's look at where
+Claude Code really shines: the tasks that span your entire codebase.
+--
+
+// ------ Slide 16: Large-Scale Refactoring ------
+
+== While Waiting for PR Approvals: Tackle Tech Debt
+
+[source,bash]
+----
+$ claude
+
+> Migrate the UserService module from Spring WebMVC
+  to Spring WebFlux. Convert all blocking calls to
+  reactive streams. Update controllers to return
+  Mono/Flux. Migrate RestTemplate to WebClient.
+  Update tests to use StepVerifier.
+----
+
+[%step]
+* Analyzes 47 files in the module
+* Converts `@RestController` return types to `Mono<>` and `Flux<>`
+* Replaces `RestTemplate` calls with `WebClient`
+* Rewrites repository layer for reactive `R2DBC`
+* Updates 23 test files to use `StepVerifier`
+* Runs full test suite — iterates on 3 failures
+
+[.notes]
+--
+While your 4 PRs are waiting for approvals, you have a window.
+This is where Claude Code earns its keep — tasks that span dozens of files.
+This WebFlux migration touches 47 files. Claude Code analyzed them,
+understood the relationships, and systematically converted them.
+It did not just find-and-replace. It understood the reactive paradigm and applied it correctly.
+Were there things to fix? Absolutely. But the heavy lifting was done in minutes, not days.
+This is the kind of task that would take a team a full sprint.
+--
+
+// ------ Slide 17: CLAUDE.md and copilot-instructions.md ------
+
+== Teaching Agents Your Standards
+
+[.columns]
+=== Project Instructions
+
+[.column]
+--
+*CLAUDE.md* (Claude Code)
+[source,markdown]
+----
+# Project Standards
+
+## Architecture
+- Hexagonal: adapters/ ports/ domain/
+- Domain objects: no framework annotations
+
+## Naming
+- Services: *Service.java
+- DTOs: *Request.java, *Response.java
+
+## Testing
+- 80% branch coverage minimum
+- @DisplayName on every test
+
+## Security
+- Parameterized queries only
+- Validate all input with jakarta.validation
+----
+--
+
+[.column]
+--
+*copilot-instructions.md* (VS Code)
+[source,markdown]
+----
+# Copilot Instructions
+
+## When reviewing code
+- Check for SQL injection patterns
+- Verify null safety on all parameters
+- Ensure tests use @DisplayName
+
+## When generating code
+- Use hexagonal architecture
+- Place DTOs in *Request/*Response pattern
+- Always include integration tests
+
+## When fixing security issues
+- Convert string concat to PreparedStatement
+- Add input validation annotations
+----
+Stored at `.github/copilot-instructions.md`
+--
+
+[.notes]
+--
+Both tools support project-level instruction files.
+CLAUDE.md sits in your project root and Claude Code reads it automatically.
+copilot-instructions.md goes in .github/ and VS Code Copilot reads it for every interaction.
+These are incredibly powerful. Instead of explaining your conventions in every prompt,
+the agent reads the file and applies your standards automatically.
+Think of it as onboarding documentation that the agent actually follows.
+The security rule about parameterized queries? That is exactly what would have prevented
+CVE-2026-1847 from being written in the first place.
+--
+
+// ------ Slide 18: Subagents — FEAT-4921 Infrastructure ------
+
+== Subagents: Parallel Work for FEAT-4921
+
+[source,bash]
+----
+$ claude
+
+> FEAT-4921 needs infrastructure. Scaffold:
+  - Dockerfile with multi-stage build for the payment service
+  - docker-compose.yml with Redis and the app
+  - Flyway migration for the rate_limit_config table
+  - GitHub Actions CI pipeline with Redis service container
+  - Kubernetes manifest with Redis sidecar
+----
+
+[%step]
+* Claude spawns subagents to work in parallel
+* Subagent 1: Dockerfile + docker-compose with Redis
+* Subagent 2: Flyway migration + schema
+* Subagent 3: GitHub Actions CI with Redis service
+* Subagent 4: Kubernetes manifests
+* Main agent coordinates and integrates the results
+
+[.notes]
+--
+Remember FEAT-4921? We built the rate limiter code and tests earlier.
+But a feature is not done until it has infrastructure — Docker, CI, migrations, deployment.
+Claude Code can spawn subagents that work on different parts of the task simultaneously.
+This is like having a small team working in parallel, coordinated by a lead.
+Each subagent focuses on its area, and the main agent integrates the results.
+The result: FEAT-4921 is not just implemented and tested — it is deployable.
+All before Friday.
+--
+
+// ===================================================================
+// SECTION 4: Quality vs Quantity (Slides 19–24)
+// ===================================================================
+
+// ------ Slide 19: Section Divider ------
+
+[%notitle, background-color="#a03030"]
+== Quality Trap
+
+=== The Trap
+
+We cleared every notification. Now the hard question.
+
+[.notes]
+--
+We have cleared all four notifications. PRs reviewed, CVE fixed, FEAT-4921 implemented,
+tested, and scaffolded with infrastructure. All before lunch.
+But now I need to talk about the elephant in the room.
+These tools make it incredibly easy to generate code. And that is exactly the problem.
+--
+
+// ------ Slide 20: The 10x Trap ------
+
+== The 10x Trap
+
+[quote]
+____
+"I generated 10,000 lines of code today!"
+____
+
+[%step]
+* Who reviews 10,000 lines?
+* Who tests 10,000 lines?
+* Who maintains 10,000 lines?
+* Who debugs 10,000 lines at 2 AM?
+* **You do.**
+
+[.notes]
+--
+I've heard people brag about this. And it terrifies me.
+Generating code is free. Maintaining it is not.
+Every line of code is a liability. It needs to be tested, reviewed, secured, and maintained.
+If you generate 10,000 lines and don't understand every one of them, you've created a debt, not an asset.
+--
+
+// ------ Slide 21: The Real Metric ------
+
+== The Real Metric
+
+[%step]
+* Not: lines of code generated
+* Not: number of PRs merged
+* Not: features shipped per sprint
+* **But: problems solved with minimal, maintainable code**
+
+[.notes]
+--
+The metric that matters is problems solved — not code produced.
+The best solution might be 50 lines, not 500.
+The best fix might be deleting code, not adding it.
+Use agents to write LESS code, not more. Better code, not faster code.
+--
+
+// ------ Slide 22: Better, Not More ------
+
+== Better, Not More
+
+[.columns]
+=== Mindset Shift
+
+[.column]
+--
+*Wrong Mindset*
+
+[%step]
+* "I can build features 5x faster"
+* "I don't need to understand the code"
+* "The agent wrote tests so we're covered"
+* "Ship it, the agent said it works"
+--
+
+[.column]
+--
+*Right Mindset*
+
+[%step]
+* "I can build features with 5x better quality"
+* "I review and understand every line"
+* "The agent drafted tests, I verified coverage"
+* "I validated the behavior, then shipped"
+--
+
+[.notes]
+--
+The difference between these two columns is the difference between
+a productive engineer and a liability.
+The right mindset uses agents to raise quality, not just speed.
+You're still the engineer. The agent is the tool.
+--
+
+// ------ Slide 23: The New Standard ------
+
+== The New Standard
+
+[%step]
+* With these tools, there's **no excuse** to skip:
+** Comprehensive test coverage
+** Security review before commit
+** Up-to-date documentation
+** Consistent code style
+** Thorough PR reviews
+* The bar has been raised — **meet it**
+
+[.notes]
+--
+Here's the flip side of the quality argument.
+If these tools make it trivially easy to write tests, review security, and generate docs,
+then NOT doing those things is a choice, not a constraint.
+The standard should go up, not just the speed.
+--
+
+// ------ Slide 24: You Are Still the Engineer ------
+
+== You Are Still the Engineer
+
+[%step]
+* Agents don't understand your *business domain*
+* Agents don't understand *trade-offs and constraints*
+* Agents don't understand *team dynamics and politics*
+* Agents don't understand *what to build next*
+* Agents can't say "we shouldn't build this at all"
+
+[quote]
+____
+An agent can write a perfect rate limiter for FEAT-4921. It cannot tell you whether your payment API needs one.
+____
+
+[.notes]
+--
+This is the most important point in the entire talk.
+An agent can write a perfect rate limiter for FEAT-4921. It cannot tell you whether your payment API needs one.
+An agent can refactor your code. It cannot tell you whether refactoring is the right priority.
+You bring the judgment. You bring the context. You bring the "why."
+The agent handles the "how." That partnership is incredibly powerful.
+--
+
+// ===================================================================
+// SECTION 5: Practical Adoption (Slides 25–28)
+// ===================================================================
+
+// ------ Slide 25: Start Today ------
+
+[%notitle, background-color="#2d7d5f"]
+== Adoption
+
+=== Practical Adoption
+
+Start Monday morning
+
+[.notes]
+--
+We've covered the what and the why. Now let's talk about the how.
+I want you to leave this room with a concrete plan for Monday morning.
+--
+
+// ------ Slide 26: Four-Week Plan ------
+
+== Start Today: A 4-Week Path
+
+[%step]
+* **Week 1** — Set up your tools: create `.github/prompts/review-code.prompt.md`, write a `CLAUDE.md`, configure the Atlassian Rovo MCP server. Use `/review-code` on your next PR.
+* **Week 2** — Use agent-assisted review for every PR. Run `/security-review` on your most critical service. Compare agent findings to your own.
+* **Week 3** — Try Agent Mode for a real task: generate tests for an untested class, fix a security finding before standup.
+* **Week 4** — Use Agent Mode + MCP for a feature from Jira. Let the agent read the ticket and build the implementation. Review everything.
+
+[.notes]
+--
+You do not need to go from zero to agent mode overnight.
+This is a 4-week ramp that builds confidence gradually.
+Week 1 is about setup — and it is not trivial. Create your first prompt file,
+write a CLAUDE.md or copilot-instructions.md, and configure MCP.
+These are one-time investments that pay off every day after.
+By week 4, you will have done exactly what we showed today: cleared PRs, fixed security
+issues, and built a feature from a Jira ticket — all with agent assistance.
+--
+
+// ------ Slide 27: Pitfalls to Avoid ------
+
+== Pitfalls to Avoid
+
+[%step]
+* **Accepting without reading** — always review generated code line by line
+* **Skipping tests on generated code** — generated code needs *more* testing, not less
+* **Over-trusting the agent** — it's confident even when it's wrong
+* **Vague prompts** — garbage in, garbage out
+* **Ignoring the learning curve** — prompt engineering is a real skill
+
+[.notes]
+--
+These are the mistakes I see most often.
+The first one is the most dangerous — accepting generated code without understanding it.
+You are responsible for every line in your codebase, whether you typed it or not.
+--
+
+// ------ Slide 28: Team Adoption ------
+
+== Team Adoption
+
+[%step]
+* **Identify champions** — 1-2 people per team who learn deeply and teach others
+* **Share reusable prompts** — commit `.github/prompts/*.prompt.md` files and `.claude/skills/` to your repo so the whole team gets them
+* **Standardize project instructions** — a shared `CLAUDE.md` and `copilot-instructions.md` means every agent interaction follows your team's standards
+* **Configure MCP servers** — set up Atlassian Rovo MCP once, every engineer benefits
+* **Measure what matters** — defect rates, review quality, not lines generated
+
+[.notes]
+--
+Adoption works best when it is organic and led by champions.
+Do not mandate it. Let the results speak for themselves.
+The key insight: prompt files and skills are version-controlled and shared.
+When someone writes a great /review-code prompt, commit it to .github/prompts/
+and the whole team gets it. When someone builds a custom Claude skill for database migrations,
+put it in .claude/skills/ and everyone benefits.
+The Atlassian Rovo MCP server is configured once per project — after that, every engineer
+on the team can read Jira tickets and Confluence pages from their agent.
+And measure quality, not quantity. That is the theme of this entire talk.
+--
+
+// ===================================================================
+// SECTION 6: Looking Forward (Slide 29)
+// ===================================================================
+
+// ------ Slide 29: What Is Next ------
+
+== What Is Next
+
+[%step]
+* **MCP is here now** — we just used it. Atlassian Rovo, GitHub, databases — agents already connect to your tools
+* **Deeper MCP integration** — agents that update the Jira ticket when the PR is merged, close the loop automatically
+* **Multi-agent orchestration** — teams of specialized agents collaborating on complex tasks (Claude Code subagents are the start)
+* **CI/CD agents** — agents that fix failing builds, open PRs, and iterate until green
+* **Continuous code improvement** — agents that proactively find tech debt and propose refactoring
+* **Personalized assistance** — agents that learn your coding patterns and team conventions over time
+
+[.notes]
+--
+A key point: MCP is not the future. We just used it.
+The Atlassian Rovo MCP server read our Jira ticket, and the agent built the feature.
+That is today, not tomorrow.
+What IS next: deeper integration. Imagine the agent reads the Jira ticket, builds the feature,
+opens a PR, and when the PR is approved and merged, updates the Jira ticket to Done automatically.
+The full loop, from ticket to deployment, with the agent handling the mechanical steps
+and you providing the judgment at each gate.
+Subagents are the start of multi-agent orchestration.
+CI/CD agents are already emerging — they watch your pipeline and fix failures.
+The trend is clear: agents handle more of the mechanical work, and engineers focus
+more on design, architecture, and judgment.
+--
+
+// ===================================================================
+// SECTION 7: Closing (Slides 30–31)
+// ===================================================================
+
+// ------ Slide 30: Call to Action ------
+
+== Your Challenge
+
+[%step]
+* **Monday**: Pick one real task and try Agent Mode
+* **This week**: Write a `CLAUDE.md` for your project
+* **This month**: Measure your defect rate — it should drop
+* **From now on**: Raise the bar. Better code, not just more code.
+
+[.notes]
+--
+I want to leave you with a concrete challenge.
+Monday morning, pick one real task — a PR review, a set of tests, a small feature.
+Use agent mode. See what happens. Then build from there.
+Write that CLAUDE.md. Capture your standards. Share it with your team.
+And hold yourself to a higher bar — because now you can.
+--
+
+// ------ Slide 31: Thank You ------
+
+== Thank You -- Questions?
+
+Josh Kurz -- AI Engineering, JPMorgan Chase
+
+icon:github[] github.com/joshkurz
+
+Slides and resources: *https://github.com/joshkurz/devnexus-2026-agents*
+
+[.notes]
+--
+Thank you all for your time today. I hope this has given you practical ideas
+you can take back to your teams.
+I'm happy to take questions. And please come say hi afterwards if you want to
+talk more about any of this.
+The slides and all code examples are at that GitHub link.
+--
