@@ -1,5 +1,5 @@
 = Unlocking Engineering Productivity with IDE-Based Coding Agents
-Josh Kurz — AI Engineering, JPMorgan Chase
+Josh Kurz
 :revealjs_theme: black
 :revealjs_transition: slide
 :revealjs_transitionSpeed: default
@@ -26,7 +26,7 @@ icon:github[] github.com/joshkurz
 
 [.notes]
 --
-Welcome everyone. I'm Josh Kurz, I work in AI Engineering at JPMorgan Chase.
+Welcome everyone. I'm Josh Kurz.
 Today I want to talk about something that's changed the way I work every single day — coding agents inside your IDE.
 This isn't about building custom AI platforms. It's about using the tools you already have.
 --
@@ -1058,7 +1058,7 @@ And hold yourself to a higher bar — because now you can.
 
 == Thank You -- Questions?
 
-Josh Kurz -- AI Engineering, JPMorgan Chase
+Josh Kurz
 
 icon:github[] github.com/joshkurz
 
